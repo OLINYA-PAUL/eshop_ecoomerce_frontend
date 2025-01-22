@@ -14,6 +14,13 @@ module.exports = {
         "1300px": "1300px",
         "400px": "400px",
       },
+
+      backgroundColor: {
+        primary: "#1a1a1a",
+        secondary: "#101010",
+        tertiary: "#F3F3F3",
+        inputColor: "#333333",
+      },
     },
   },
   plugins: [],
