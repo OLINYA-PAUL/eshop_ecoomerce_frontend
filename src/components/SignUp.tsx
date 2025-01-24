@@ -3,36 +3,74 @@ import styles from "../styles/styles";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import { axiosInstance } from "../axiosbaseUrl/axios";
+import { useNavigate } from "react-router-dom";
+import { BiLoaderAlt } from "react-icons/bi";
+import { FiLoader } from "react-icons/fi";
 const SignUp = () => {
-  const [form, setForm] = useState({ email: "", password: "", name: "" });
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+  });
   const [showPassWord, setshowPassWoed] = useState(false);
   const [isError, setisError] = useState(false);
-  const [avatar, setavatar] = useState<File | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleForm = ({ name, value }: { name: string; value: string }) => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSummitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      if (fileReader.readyState === FileReader.DONE) {
+        setAvatar(fileReader.result as string);
+      }
+    };
+
+    const filedata = fileReader.readAsDataURL(file);
+    console.log(filedata);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setisError(true);
-    const file = e.target.files?.[0];
-    const MAX_FILE_SIZE = 3 * 1024 * 1024;
+  const handleSummitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { fullName, email, password } = form;
 
-    const fileExtention = ["image/jpeg", "image/png"];
+    setIsLoading(true);
 
-    if (file && !file.type.includes(fileExtention[0]))
-      return toast.error("Please select a valid image file (JPEG, PNG, etc.).");
-    if (file && file?.size > MAX_FILE_SIZE)
-      return toast.error("File size must be less than 3MB");
+    if (!avatar) {
+      toast.error("Image is required");
+      setIsLoading(false);
+      return;
+    }
 
-    if (file && typeof file.type === "string") {
-      setavatar(file);
-      setisError(false);
+    try {
+      await axiosInstance
+        .post("/user/create-user", { fullName, email, password, avatar })
+        .then((data) => {
+          console.log(data.data);
+
+          toast.success("Check your email to activate your account");
+          navigate("/");
+          setForm({ ...form, email: "", password: "", fullName: "" });
+          setAvatar(null);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          setisError(true);
+          toast.error(error.message);
+          setIsLoading(false);
+        });
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 
@@ -44,7 +82,7 @@ const SignUp = () => {
         </h2>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md shadow-md ">
           <div className="bg-primary py-8 px-8 sm:px-10">
-            <form className="space-y-6" onSubmit={() => handleSummitForm}>
+            <form className="space-y-6" onSubmit={handleSummitForm}>
               <div>
                 <label
                   htmlFor="email"
@@ -57,9 +95,9 @@ const SignUp = () => {
                     type="text"
                     required
                     name="fullName"
-                    autoComplete="fullName"
+                    // autoComplete="fullName"
                     placeholder="Enter your fullName"
-                    value={form.name}
+                    value={form.fullName}
                     onChange={(e) =>
                       handleForm({ name: "fullName", value: e.target.value })
                     }
@@ -83,7 +121,7 @@ const SignUp = () => {
                     type="email"
                     required
                     name="email"
-                    autoComplete="email"
+                    // autoComplete="email"
                     placeholder="Enter your email"
                     value={form.email}
                     onChange={(e) =>
@@ -118,7 +156,7 @@ const SignUp = () => {
                       type={`${showPassWord ? "text" : "password"}`}
                       required
                       name="password"
-                      autoComplete="password"
+                      // autoComplete="password"
                       placeholder="Enter your password"
                       value={form.password}
                       onChange={(e) =>
@@ -145,7 +183,7 @@ const SignUp = () => {
                     <span className="inline-block h-10 w-10 rounded-full overflow-hidden mr-5  ">
                       {avatar ? (
                         <img
-                          src={URL.createObjectURL(avatar)}
+                          src={avatar}
                           alt="avatar"
                           className="h-full w-full object-cover"
                         />
@@ -178,9 +216,17 @@ const SignUp = () => {
               <div className="flex justify-start">
                 <button
                   type="submit"
-                  className={` font-semibold w-full text-center text-lg bg-green-400 p-3 rounded-md`}
+                  className={` flex items-start justify-center font-semibold w-full text-center text-lg bg-green-400 p-3 rounded-md`}
                 >
-                  Submit
+                  {isLoading ? (
+                    // <BiLoaderAlt color="white" size={20} />
+                    <>
+                      <FiLoader color="white" size={20} className="mr-3" />
+                      <span className="text-sm font-semibold">Please wait</span>
+                    </>
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </div>
               <div className="flex items-center justify-end">
