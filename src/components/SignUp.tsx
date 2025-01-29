@@ -12,7 +12,7 @@ const SignUp = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    fullName: "",
+    name: "",
   });
   const [showPassWord, setshowPassWoed] = useState(false);
   const [isError, setisError] = useState(false);
@@ -42,7 +42,7 @@ const SignUp = () => {
 
   const handleSummitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { fullName, email, password } = form;
+    const { name, email, password } = form;
 
     setIsLoading(true);
 
@@ -54,20 +54,22 @@ const SignUp = () => {
 
     try {
       await axiosInstance
-        .post("/user/create-user", { fullName, email, password, avatar })
+        .post("/user/create-user", { name, email, password, avatar })
         .then((data) => {
           console.log(data.data);
 
           toast.success("Check your email to activate your account");
-          navigate("/");
-          setForm({ ...form, email: "", password: "", fullName: "" });
+          setForm({ ...form, email: "", password: "", name: "" });
           setAvatar(null);
+          setIsLoading(false);
         })
         .catch((error: any) => {
           console.log(error);
           setisError(true);
-          toast.error(error.message);
+          toast.error(error.response?.data.error);
           setIsLoading(false);
+
+          return;
         });
     } catch (error: any) {
       console.log(error.message);
@@ -95,11 +97,10 @@ const SignUp = () => {
                     type="text"
                     required
                     name="fullName"
-                    // autoComplete="fullName"
                     placeholder="Enter your fullName"
-                    value={form.fullName}
+                    value={form.name}
                     onChange={(e) =>
-                      handleForm({ name: "fullName", value: e.target.value })
+                      handleForm({ name: "name", value: e.target.value })
                     }
                     className={`${styles.input} p-3 ${
                       isError
@@ -121,7 +122,6 @@ const SignUp = () => {
                     type="email"
                     required
                     name="email"
-                    // autoComplete="email"
                     placeholder="Enter your email"
                     value={form.email}
                     onChange={(e) =>
@@ -156,7 +156,6 @@ const SignUp = () => {
                       type={`${showPassWord ? "text" : "password"}`}
                       required
                       name="password"
-                      // autoComplete="password"
                       placeholder="Enter your password"
                       value={form.password}
                       onChange={(e) =>
@@ -219,10 +218,11 @@ const SignUp = () => {
                   className={` flex items-start justify-center font-semibold w-full text-center text-lg bg-green-400 p-3 rounded-md`}
                 >
                   {isLoading ? (
-                    // <BiLoaderAlt color="white" size={20} />
                     <>
                       <FiLoader color="white" size={20} className="mr-3" />
-                      <span className="text-sm font-semibold">Please wait</span>
+                      <span className="text-sm font-semibold">
+                        Please wait...
+                      </span>
                     </>
                   ) : (
                     "Sign Up"
