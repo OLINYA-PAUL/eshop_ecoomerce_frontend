@@ -1,20 +1,56 @@
 import React, { useState } from "react";
 import styles from "../styles/styles";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { axiosInstance } from "../axiosbaseUrl/axios";
+import { FiLoader } from "react-icons/fi";
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
   const [showPassWord, setshowPassWoed] = useState(false);
   const [isError, setisError] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleForm = ({ name, value }: { name: string; value: string }) => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSummitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSummitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const { email, password, rememberMe } = form;
+
+    setIsLoading(true);
+
+    try {
+      await axiosInstance
+        .post("/user/login-user", { email, password, rememberMe })
+        .then((data) => {
+          console.log(data.data);
+
+          toast.success(data.data.message);
+          navigate("/");
+          setForm({ ...form, email: "", password: "", rememberMe: false });
+          setIsLoading(false);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          setisError(true);
+          toast.error(error.response?.data.error);
+          setIsLoading(false);
+
+          return;
+        });
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.response?.data.error);
+    }
   };
 
   return (
@@ -25,7 +61,7 @@ const Login = () => {
         </h2>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md shadow-md ">
           <div className="bg-primary py-8 px-8 sm:px-10">
-            <form className="space-y-6" onSubmit={() => handleSummitForm}>
+            <form className="space-y-6" onSubmit={handleSummitForm}>
               <div>
                 <label
                   htmlFor="email"
@@ -101,6 +137,10 @@ const Login = () => {
                     name="remember-me"
                     id="remember-me"
                     accept="remember-me"
+                    checked={form.rememberMe}
+                    onChange={(e) =>
+                      setForm({ ...form, rememberMe: e.target.checked })
+                    }
                     className={` h-5 w-5 mr-2 cursor-pointer focus:ring-green-400 border-b-orange-500 text-green-400 rounded`}
                   />
                   <label
@@ -112,18 +152,27 @@ const Login = () => {
                 </div>
                 <div>
                   <div className="font-md font-semibold cursor-pointer text-green-400">
-                    <a href="http://#" target="_blank">
+                    <Link to="/reset-password" target="_blank">
                       Forgot your password
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
               <div className="flex justify-start">
                 <button
                   type="submit"
-                  className={` font-semibold w-full text-center text-lg bg-green-400 p-3 rounded-md`}
+                  className={` flex items-start justify-center font-semibold w-full text-center text-lg bg-green-400 p-3 rounded-md`}
                 >
-                  Submit
+                  {isLoading ? (
+                    <>
+                      <FiLoader color="white" size={20} className="mr-3" />
+                      <span className="text-sm font-semibold">
+                        Please wait...
+                      </span>
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
               <div className="flex items-center justify-end">

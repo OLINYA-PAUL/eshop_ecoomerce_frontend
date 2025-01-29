@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.shake_animation {
+  animation: shakeOnError 0.5s ease-in-out;
+}
+
+@keyframes shakeOnError {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateY(-5px);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  60% {
+    transform: translateY(-5);
+  }
+  80% {
+    transform: translateX(10);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
