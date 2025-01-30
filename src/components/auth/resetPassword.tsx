@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import styles from "../styles/styles";
+
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { axiosInstance } from "../axiosbaseUrl/axios";
 import { FiLoader } from "react-icons/fi";
+import { axiosInstance } from "../../axiosbaseUrl/axios";
+import styles from "../../styles/styles";
 
 const PasswordReset = () => {
   const [form, setForm] = useState({
