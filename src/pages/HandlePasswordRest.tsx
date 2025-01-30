@@ -1,4 +1,4 @@
-import PasswordReset from "../components/resetPassword";
+import PasswordReset from "../components/auth/resetPassword";
 
 const SignUpPage = () => {
   return (

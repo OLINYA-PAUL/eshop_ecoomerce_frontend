@@ -1,10 +1,10 @@
 import React, { SetStateAction, useRef, useState } from "react";
-import styles from "../styles/styles";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { axiosInstance } from "../axiosbaseUrl/axios";
 import { FiLoader } from "react-icons/fi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { axiosInstance } from "../../axiosbaseUrl/axios";
+import styles from "../../styles/styles";
 
 const NewPasswordReset = () => {
   const [form, setForm] = useState({
