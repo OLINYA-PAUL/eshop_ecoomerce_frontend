@@ -28,7 +28,6 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 70) {
-        console.log("window scroll", window.scrollY);
         setActiveMenu(true);
       } else {
         setActiveMenu(false);
@@ -41,8 +40,6 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
   }, []);
 
   const debouncedSearchTerm = UseDebounce(searchTerm, 500);
-
-  console.log("search product", productData);
 
   const handleSearchProduct = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
@@ -63,7 +60,7 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
   return (
     <div>
       <div className={`${styles.section}`}>
-        <div className="hidden shadow-md 800px:my-[10px] p-5 800px:flex items-center justify-between">
+        <div className="hidden shadow-md p-5 800px:flex items-center justify-between">
           <div>
             <Link to={"/"}>
               <img
@@ -120,7 +117,7 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
                 type="button"
                 className={`${styles.button} shadow-2xl font-bold`}
               >
-                Become seller {"  "}
+                Become seller
                 <IoIosArrowForward color="white" size={20} className="ml-2" />
               </button>
             </Link>
@@ -129,8 +126,9 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
       </div>
       <div
         className={` ${
-          activeMenu === true &&
-          "fixed top-0 left-0 shadow-sm z-10 transition duration-150"
+          activeMenu === true
+            ? "fixed top-0 left-0 shadow-md z-10 transition duration-150 "
+            : ""
         } hidden  bg-primary relative shadow-md 800px:my-[10px] px-20 text-center 800px:flex items-center justify-between w-full `}
       >
         <div className=" rounded-tl-2xl p-4 rounded-tr-2xl relative  w-[270px] flex items-center justify-between  bg-inputColor">

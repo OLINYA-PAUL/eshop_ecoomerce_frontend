@@ -248,6 +248,7 @@ export const brandingData: BrandingItem[] = [
 
 // categories data
 export const categoriesData:Category[] = [
+    
   {
     id: 1,
     title: "Computers and Laptops",
@@ -281,20 +282,20 @@ export const categoriesData:Category[] = [
     title: "Shoes",
     subTitle: "",
     image_Url:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvBQPQMVNRd6TtDkGs2dCri0Y-rxKkFOiEWw&usqp=CAU",
+      "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
   },
   {
     id: 6,
     title: "Gifts",
     subTitle: "",
     image_Url:
-      "https://securecdn.pymnts.com/wp-content/uploads/2014/11/Gifts-Photo-700x489.jpg",
+      "https://www.shift4shop.com/2015/images/industries/clothing/clothing-apparel.png",
   },
   {
     id: 7,
     title: "Pet Care",
     subTitle: "",
-    image_Url: "https://cdn.openpr.com/T/c/Tc15444071_g.jpg",
+    image_Url:  "https://static.vecteezy.com/system/resources/previews/011/996/555/original/3d-black-headphone-illustration-ecommerce-icon-png.png",
   },
   {
     id: 8,
@@ -330,7 +331,7 @@ export const productData: ProductTypes[] = [
     image_Url: [
       {
         public_id: "test",
-        url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+        url:  "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
       },
       {
         public_id: "test",
@@ -455,7 +456,7 @@ export const productData: ProductTypes[] = [
         public_id: "test",
         url: "https://www.hatchwise.com/wp-content/uploads/2022/05/amazon-logo-1024x683.png",
       },
-      ratings: 4.8,
+      ratings: 2.5,
     },
     price: 160,
     discount_price: 130,
@@ -525,13 +526,13 @@ export const productData: ProductTypes[] = [
       name: "Dell Inc.",
       shop_avatar: {
         public_id: "test",
-        url: "https://www.hatchwise.com/wp-content/uploads/2022/05/amazon-logo-1024x683.png",
+        url: "https://m.media-amazon.com/images/I/71ASz3WRoKL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
-      ratings: 4.4,
+      ratings: 2.4,
     },
     price: 1250,
     discount_price: 1199,
-    rating: 4.6,
+    rating: 1.6,
     reviews: [
       { user: { name: "Bill Gates" }, comment: "Perfect for work.", rating: 5 },
       {
