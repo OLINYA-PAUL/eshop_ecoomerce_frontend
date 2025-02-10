@@ -2,10 +2,24 @@
 
 import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 
+export interface User  {
+  _id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+  avatar: {
+    public_id: string;
+    url: string;
+  };
+  addresses: any[];
+  createdAt: string;
+  __v: number;
+};
+
 interface InitialState {
   isAuthenticated: boolean;
   loading: boolean;
-  user?: any; // Adjust type accordingly (e.g., `user?: UserType`)
+  user?: User;
   error?: string;
 }
 
@@ -30,9 +44,9 @@ export const userReducer = createReducer(initialState, (builder) => {
     .addCase(
       "LoadUserFail",
       (state, { payload }: PayloadAction<{ user: any }>) => {
+        state.isAuthenticated = false;
         state.loading = false;
         state.error = payload;
-        state.isAuthenticated = false;
       }
     )
     .addCase("ClearError", (state) => {
