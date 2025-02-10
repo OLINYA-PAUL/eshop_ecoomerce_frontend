@@ -15,11 +15,14 @@ import DropDown from "./DropDown";
 import NavBar from "./NavBar";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
+import { useSelector, UseSelector } from "react-redux";
+import { User } from "../../radux/reducers/user";
 
 const Header = ({ activeHeader }: { activeHeader: number }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState<ProductTypes[]>([]);
-  const [isAuthenticated, setisAuthenticated] = useState(false);
+
+  const { isAuthenticated, user } = useSelector((state: any) => state.user);
 
   const [DropDownMenu, setDropDownMenu] = useState(false);
 
@@ -52,9 +55,9 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
         .includes(debouncedSearchTerm.toLowerCase());
     });
 
-    if (filteredProduct.length !== 0 && debouncedSearchTerm !== "")
+    if (filteredProduct.length !== 0 && debouncedSearchTerm !== "") {
       setSearchData(filteredProduct);
-    else setSearchData([]);
+    } else setSearchData([]);
   };
 
   return (
@@ -126,29 +129,31 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
       </div>
       <div
         className={` ${
-          activeMenu === true
-            ? "fixed top-0 left-0 shadow-md z-10 transition duration-150 "
-            : ""
-        } hidden  bg-primary relative shadow-md 800px:my-[10px] px-20 text-center 800px:flex items-center justify-between w-full `}
+          activeMenu
+            ? "fixed top-0 left-0 w-full shadow-md z-50 transition duration-150 bg-primary"
+            : "relative"
+        } bg-primary hidden shadow-md px-20 text-center 800px:flex items-center justify-between h-[100px]`}
       >
-        <div className=" rounded-tl-2xl p-4 rounded-tr-2xl relative  w-[270px] flex items-center justify-between  bg-inputColor">
-          <BiMenuAltLeft color="white" size={30} />
-          <button
-            type="button"
-            className="h-[100%]  bg-transparent w-full transition-all text-white duration-150 font-sans text-lg select-none "
-            onClick={() => setDropDownMenu((pre) => !pre)}
-          >
-            All Cateories
-          </button>
+        <div className="absolute bottom-0 ">
+          <div className=" rounded-tl-2xl p-4 rounded-tr-2xl relative  w-[270px] flex items-center justify-between  bg-inputColor">
+            <BiMenuAltLeft color="white" size={30} />
+            <button
+              type="button"
+              className="h-[100%]  bg-transparent w-full transition-all text-white duration-150 font-sans text-lg select-none "
+              onClick={() => setDropDownMenu((pre) => !pre)}
+            >
+              All Cateories
+            </button>
 
-          {DropDownMenu && (
-            <DropDown
-              categoriesData={categoriesData}
-              setDropDownMenu={setDropDownMenu}
-            />
-          )}
+            {DropDownMenu && (
+              <DropDown
+                categoriesData={categoriesData}
+                setDropDownMenu={setDropDownMenu}
+              />
+            )}
+          </div>
         </div>
-        <div className={`${styles.noramlFlex} justify-between`}>
+        <div className={`${styles.noramlFlex} justify-between ml-[500px] `}>
           <NavBar navItems={navItems} activeHeader={activeHeader} />
         </div>
 
@@ -170,7 +175,7 @@ const Header = ({ activeHeader }: { activeHeader: number }) => {
               {isAuthenticated ? (
                 <Link to="/profile">
                   <img
-                    src={`${""}`}
+                    src={`${user?.avatar?.url}`}
                     className="w-[35px] h-[35px] rounded-full"
                     alt=""
                   />

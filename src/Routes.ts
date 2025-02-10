@@ -4,3 +4,7 @@ export { default as SignUp } from "./pages/SignUp";
 export { default as PasswordReset } from "./pages/HandlePasswordRest";
 export { default as NewPasswordReset } from "./pages/NewPasswordReset";
 export { default as ActivationActivationPage } from "./pages/ActivationPage";
+export { default as ProductsPage } from "./pages/ProductsPage";
+export { default as BestSelling } from "./pages/BestSelling";
+export { default as Events } from "./pages/Events";
+export { default as FAQ } from "./pages/FAQ";
