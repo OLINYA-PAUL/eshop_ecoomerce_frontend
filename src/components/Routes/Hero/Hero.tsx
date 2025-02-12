@@ -15,7 +15,8 @@ const Hero = () => {
         <h1
           className={`text-[35px] leading-[1.2] 800px:text-[60px] text-white font-[600] capitalize`}
         >
-          Discover the Best Deals <br /> on Everyday Essentials & More!
+          Discover the Best Deals <br className="hidden 800px:flex" /> on
+          Everyday Essentials & More!
         </h1>
         <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-white">
           From the latest gadgets to home essentials, find everything you need
